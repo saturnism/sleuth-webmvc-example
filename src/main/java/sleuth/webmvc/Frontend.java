@@ -1,6 +1,7 @@
 package sleuth.webmvc;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.sleuth.Sampler;
@@ -18,9 +19,11 @@ public class Frontend {
 
   @Autowired RestTemplate template;
 
+  @Value("${backend.host:localhost}") String backendHost;
+
   @RequestMapping("/")
   public String callBackend() {
-    return template.getForObject("http://localhost:9000/api", String.class);
+    return template.getForObject("http://" + backendHost + ":9000/api", String.class);
   }
 
   /** Sleuth automatically adds trace interceptors when in the classpath */
